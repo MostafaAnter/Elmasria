@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Elmasria</string>
+
+    <string name="about_us">من نحن</string>
+    <string name="communicate">التواصل</string>
+    <string name="error">خطأ!</string>
+    <string name="language">اللغة</string>
+    <string name="language_arabic">عربي</string>
+    <string name="language_en">إنجليزى</string>
+    <string name="share">مشاركة</string>
+    <string name="there_is_no_Inter_net">لايوجد أتصال بالانترنت</string>
+    <string name="exit">خروج</string>
+    <string name="there_is_no_data">لا يوجد بيانات</string>
+    <string name="cancel">إلغاء</string>
+    <string name="cant_get_location">لا نستطيع الوصول لمكانك</string>
+    <string name="confirm">تأكيد</string>
+    <string name="done">تم!</string>
+    <string name="loading">جارى التحميل...</string>
+    <string name="ok">نعم</string>
+    <string name="open_gps">فتح ال GPS!</string>
+    <string name="time_out">الوقت انتهي!</string>
+    <string name="try_again">حاول مره أخرى!</string>
+    <string name="why_open_gps">يجب ان تقوم بتشغيل ال GPS</string>
+    <string name="yes_open_gps">نعم, قم بالفتح</string>
+    <string name="action_settings">الأعدادات</string>
+</resources>

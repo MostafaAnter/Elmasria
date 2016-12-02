@@ -1,5 +1,6 @@
 package com.zedy.elmasria.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,47 +9,96 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
+import com.akexorcist.localizationactivity.LocalizationActivity;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.zedy.elmasria.R;
+import com.zedy.elmasria.store.ElmasriaPrefStore;
+import com.zedy.elmasria.utils.Constants;
 
-public class SplashActivity extends AppCompatActivity {
+import java.util.Locale;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class SplashActivity extends LocalizationActivity {
+    @BindView(R.id.splash_logo)
+    ImageView imageView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        // set default language of activity
+        setDefaultLanguage("en");
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        if (checkFirstTimeOpenApp() == 0) {
+            setLanguage("ar");
+        } else {
+            if (new ElmasriaPrefStore(this).getIntPreferenceValue(Constants.PREFERENCE_LANGUAGE) == 4) {
+                setLanguage("ar");
+            } else if (new ElmasriaPrefStore(this).getIntPreferenceValue(Constants.PREFERENCE_LANGUAGE) == 5) {
+                setLanguage("en");
+            } else {
+                setLanguage(Locale.getDefault().getLanguage());
+            }
+        }
+
+        setContentView(R.layout.activity_splash);
+        ButterKnife.bind(this);
+
+        loadSplashImage();
+
+        animateImageView();
+
+        FirebaseMessaging.getInstance().subscribeToTopic("elmasria");
+
+    }
+    private void loadSplashImage() {
+        Glide.with(this)
+                .load(R.drawable.splash_logo)
+                .crossFade()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .thumbnail(0.1f)
+                .dontAnimate()
+                .into(imageView);
+    }
+
+    private void animateImageView() {
+        Animation fade0 = AnimationUtils.loadAnimation(this, R.anim.fade_in_enter);
+
+        imageView.startAnimation(fade0);
+        fade0.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                // do some thing
+                    startActivity(new Intent(SplashActivity.this, HomeActivity.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+                    overridePendingTransition(R.anim.push_up_enter, R.anim.push_up_exit);
+
+
+
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
             }
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_splash, menu);
-        return true;
+    private int checkFirstTimeOpenApp() {
+        return new ElmasriaPrefStore(this).getIntPreferenceValue(Constants.PREFERENCE_FIRST_TIME_OPEN_APP_STATE);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }
