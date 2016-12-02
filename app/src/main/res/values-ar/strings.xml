@@ -25,4 +25,6 @@
     <string name="yes_open_gps">نعم, قم بالفتح</string>
     <string name="action_settings">الأعدادات</string>
     <string name="title_activity_home">الرئيسية</string>
+    <string name="projects">مشروعاتنا</string>
+    <string name="news">الأخبار</string>
 </resources>

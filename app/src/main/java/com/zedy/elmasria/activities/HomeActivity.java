@@ -6,7 +6,12 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -15,13 +20,20 @@ import android.text.SpannableString;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.akexorcist.localizationactivity.LocalizationActivity;
 import com.zedy.elmasria.R;
+import com.zedy.elmasria.fragments.NewsFragment;
+import com.zedy.elmasria.fragments.ProjectsFragment;
 import com.zedy.elmasria.store.ElmasriaPrefStore;
 import com.zedy.elmasria.utils.Constants;
 import com.zedy.elmasria.utils.CustomTypefaceSpan;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,12 +44,20 @@ public class HomeActivity extends LocalizationActivity
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.nav_view) NavigationView navigationView;
 
+    @BindView(R.id.tabs) TabLayout tabLayout;
+    @BindView(R.id.viewpager) ViewPager viewPager;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         setToolbar();
+
+        setupViewPager(viewPager);
+        tabLayout.setupWithViewPager(viewPager);
+        setTabLayoutColor();
+        changeTabsFont();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -179,5 +199,89 @@ public class HomeActivity extends LocalizationActivity
     private void changeFirstTimeOpenAppState(int language) {
         new ElmasriaPrefStore(this).addPreference(Constants.PREFERENCE_FIRST_TIME_OPEN_APP_STATE, 1);
         new ElmasriaPrefStore(this).addPreference(Constants.PREFERENCE_LANGUAGE, language);
+    }
+
+    // for tabs and view pager
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        adapter.addFragment(new NewsFragment(), getString(R.string.news));
+        adapter.addFragment(new ProjectsFragment(), getString(R.string.projects));
+
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch (position) {
+                    case 0:
+                        break;
+
+                    default:
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
+    }
+
+    // set tab bar indicator height
+    private void setTabLayoutColor(){
+        tabLayout.setSelectedTabIndicatorHeight(0);
+    }
+
+    private void changeTabsFont() {
+
+        ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
+        int tabsCount = vg.getChildCount();
+        for (int j = 0; j < tabsCount; j++) {
+            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
+            int tabChildsCount = vgTab.getChildCount();
+            for (int i = 0; i < tabChildsCount; i++) {
+                View tabViewChild = vgTab.getChildAt(i);
+                if (tabViewChild instanceof TextView) {
+                    Typeface makOnWayFont = Typeface.createFromAsset(getAssets(), "fonts/normal.ttf");
+                    ((TextView) tabViewChild).setTypeface(makOnWayFont);
+                }
+            }
+        }
     }
 }

@@ -27,4 +27,6 @@
     <string name="confirm">Confirm!</string>
     <string name="ok">Ok</string>
     <string name="done">Done!</string>
+    <string name="news">News</string>
+    <string name="projects">Projects</string>
 </resources>

@@ -24,4 +24,6 @@
     <string name="why_open_gps">You must open GPS to supmit request</string>
     <string name="yes_open_gps">Yes, open</string>
     <string name="title_activity_home">Home</string>
+    <string name="news">News</string>
+    <string name="projects">Projects</string>
 </resources>
