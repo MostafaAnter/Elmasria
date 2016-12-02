@@ -26,4 +26,5 @@
     <string name="title_activity_home">Home</string>
     <string name="news">News</string>
     <string name="projects">Projects</string>
+    <string name="contact_us">Contact us</string>
 </resources>

@@ -144,8 +144,11 @@ public class HomeActivity extends LocalizationActivity
                 //e.toString();
             }
         } else if (id == R.id.about_us) {
-//            startActivity(new Intent(this, AboutUsActivity.class));
-//            overridePendingTransition(R.anim.push_up_enter, R.anim.push_up_exit);
+            startActivity(new Intent(this, AboutUsActivity.class));
+            overridePendingTransition(R.anim.push_up_enter, R.anim.push_up_exit);
+        } else if (id == R.id.contact_us) {
+            startActivity(new Intent(this, ContactUsActivity.class));
+            overridePendingTransition(R.anim.push_up_enter, R.anim.push_up_exit);
         } else if (id == R.id.log_out) {
             finish();
             overridePendingTransition(R.anim.push_up_enter, R.anim.push_up_exit);
