@@ -36,7 +36,7 @@ public class SplashActivity extends LocalizationActivity {
         // set default language of activity
         setDefaultLanguage("en");
 
-        if (checkFirstTimeOpenApp() == 0) {
+        if (checkFirstTimeOpenApp() == -1) {
             setLanguage("ar");
         } else {
             if (new ElmasriaPrefStore(this).getIntPreferenceValue(Constants.PREFERENCE_LANGUAGE) == 4) {

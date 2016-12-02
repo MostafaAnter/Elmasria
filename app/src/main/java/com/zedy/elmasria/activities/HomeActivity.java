@@ -127,9 +127,7 @@ public class HomeActivity extends LocalizationActivity
 //            startActivity(new Intent(this, AboutUsActivity.class));
 //            overridePendingTransition(R.anim.push_up_enter, R.anim.push_up_exit);
         } else if (id == R.id.log_out) {
-            new ElmasriaPrefStore(this).clearPreference();
-            startActivity(new Intent(this, SplashActivity.class)
-                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+            finish();
             overridePendingTransition(R.anim.push_up_enter, R.anim.push_up_exit);
         }
 
