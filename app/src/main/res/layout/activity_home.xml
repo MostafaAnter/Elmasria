@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        android:background="#303F9F"
+        android:background="#20BDBDBD"
         app:itemTextColor="@color/white"
         app:itemIconTint="@color/white"
         app:menu="@menu/activity_home_drawer"/>

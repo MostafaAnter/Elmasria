@@ -35,4 +35,13 @@
     <string name="title_activity_projects_detail" translatable="false">ProjectsDetailActivity</string>
     <string name="contact_us">Contact us</string>
     <string name="navigation">navigation</string>
+    <string name="title">Title</string>
+    <string name="subject">Subject</string>
+    <string name="email">Email</string>
+    <string name="message">Message</string>
+    <string name="success">Message Sent Successfully</string>
+    <string name="enterTitle">Enter Correct Title</string>
+    <string name="enterEmail">Enter Correct Email</string>
+    <string name="enterSubject">Enter Subject</string>
+    <string name="enterMessage">Enter Message, plz</string>
 </resources>

@@ -65,6 +65,11 @@ public class AboutUsActivity extends LocalizationActivity implements View.OnClic
                 .thumbnail(0.2f)
                 .into(imageView);
 
+        Typeface font = Typeface.createFromAsset(getAssets(), "fonts/normal.ttf");
+
+        navigation.setTypeface(font);
+        contactUs.setTypeface(font);
+
     }
 
     private void setToolbar() {
