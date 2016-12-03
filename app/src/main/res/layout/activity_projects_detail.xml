@@ -32,11 +32,17 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center">
 
-                <com.zedy.elmasria.utils.SquaredImageView
-                    android:id="@+id/feedImage1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scaleType="centerCrop" />
+            <com.jude.rollviewpager.RollPagerView
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                app:rollviewpager_hint_color="@color/colorAccent"
+                app:rollviewpager_hint_gravity="left"
+                app:rollviewpager_hint_paddingBottom="16dp"
+                app:rollviewpager_hint_paddingLeft="16dp"
+                app:rollviewpager_hint_paddingRight="16dp"
+                app:rollviewpager_hint_paddingTop="16dp"
+                app:rollviewpager_play_delay="3000" />
 
                 <ProgressBar
                     android:id="@+id/progressBar"

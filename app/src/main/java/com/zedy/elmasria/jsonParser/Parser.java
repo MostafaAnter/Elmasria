@@ -62,6 +62,7 @@ public class Parser {
             for (int i = 0; i < dataArray.length(); i++) {
                 JSONObject itemObject = dataArray.optJSONObject(i);
 
+                String id = itemObject.optString("id");
                 String title = itemObject.optString("title");
                 String timeStamp = Utils.manipulateDateFormat(itemObject.optString("updated_at"));
                 String content = itemObject.optString("description");
@@ -70,7 +71,7 @@ public class Parser {
                 String coordinators = itemObject.optString("coordinators");
                 String deliver = String.valueOf(Utils.getYear(itemObject.optString("deliver")));
 
-                itemList.add(new ProjectItem(title, timeStamp,
+                itemList.add(new ProjectItem(id, title, timeStamp,
                         content, imageUrl, area,
                         coordinators, deliver));
 

@@ -4,19 +4,46 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.akexorcist.localizationactivity.LocalizationActivity;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.jude.rollviewpager.OnItemClickListener;
+import com.jude.rollviewpager.RollPagerView;
+import com.jude.rollviewpager.adapter.StaticPagerAdapter;
 import com.zedy.elmasria.R;
+import com.zedy.elmasria.app.AppController;
+import com.zedy.elmasria.jsonParser.Parser;
 import com.zedy.elmasria.models.ProjectItem;
+import com.zedy.elmasria.utils.Constants;
 import com.zedy.elmasria.utils.SquaredImageView;
+import com.zedy.elmasria.utils.SweetDialogHelper;
+import com.zedy.elmasria.utils.Utils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,14 +51,18 @@ import butterknife.ButterKnife;
 public class ProjectsDetailActivity extends LocalizationActivity {
     @BindView(R.id.toolbar) Toolbar toolbar;
 
-    @BindView(R.id.feedImage1) SquaredImageView imageView;
-    @BindView(R.id.progressBar) ProgressBar mProgress;
-
     @BindView(R.id.main_title) TextView mainTitel;
     @BindView(R.id.timestamp) TextView timeStamp;
     @BindView(R.id.txtDescription) TextView textStatusMsg;
 
+    @BindView(R.id.view_pager) RollPagerView rollPagerView;
+    @BindView(R.id.progressBar) ProgressBar mProgress;
+
     private ProjectItem newsItem;
+
+
+    public static List<String> images;
+    private TestLoopAdapter mLoopAdapter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,10 +70,13 @@ public class ProjectsDetailActivity extends LocalizationActivity {
         ButterKnife.bind(this);
         setToolbar();
 
+        images = new ArrayList<>();
+
         newsItem = getIntent().getParcelableExtra("item");
 
         if (newsItem != null){
             setDesign(newsItem);
+            getImages();
         }else {
             finish();
         }
@@ -69,28 +103,6 @@ public class ProjectsDetailActivity extends LocalizationActivity {
             // status is empty, remove from view
             textStatusMsg.setVisibility(View.GONE);
         }
-        // populate mainImage
-        Glide.with(this)
-                .load(newsItem.getImageUrl())
-                .placeholder(R.color.dark_gray)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .listener(new RequestListener<String, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        mProgress.setVisibility(View.GONE);
-                        return false;
-                    }
-                })
-                .crossFade()
-                .dontAnimate()
-                .thumbnail(0.2f)
-                .into(imageView);
-
     }
 
     private void setToolbar() {
@@ -103,6 +115,140 @@ public class ProjectsDetailActivity extends LocalizationActivity {
         toolbar.setTitle("");
         toolbar.setSubtitle("");
 
+    }
+
+    private class TestLoopAdapter extends StaticPagerAdapter {
+
+        private int count = images.size();
+
+        @Override
+        public View getView(ViewGroup container, int position) {
+            ImageView view = new ImageView(container.getContext());
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i("RollViewPager", "onClick");
+                }
+            });
+            view.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+            // populate mainImage
+            Glide.with(ProjectsDetailActivity.this)
+                    .load(images.get(position))
+                    .placeholder(R.color.dark_gray)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .crossFade()
+                    .dontAnimate()
+                    .thumbnail(0.2f)
+                    .into(view);
+
+            return view;
+        }
+
+        @Override
+        public int getCount() {
+            return count;
+        }
+    }
+
+    private void setViewPagerAdapter() {
+        rollPagerView.setPlayDelay(2500);
+        rollPagerView.setAdapter(mLoopAdapter = new TestLoopAdapter());
+        //rollPagerView.setHintView(new IconHintView(this,R.drawable.point_focus,R.drawable.point_normal));
+        //mRollViewPager.setHintView(new ColorPointHintView(this, Color.YELLOW,Color.WHITE));
+        //mRollViewPager.setHintView(new TextHintView(this));
+        //mRollViewPager.setHintView(null);
+        rollPagerView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+
+            }
+        });
+    }
+
+
+    private void getImages(){
+        if (Utils.isOnline(this)){
+            // Tag used to cancel the request
+            String  tag_string_req = "string_req";
+
+            String url = Constants.baseUrl + "api/project/images";
+            try {
+                url = URLDecoder.decode(url, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
+            StringRequest strReq = new StringRequest(Request.Method.POST,
+                    url, new Response.Listener<String>() {
+
+                @Override
+                public void onResponse(String response) {
+                    mProgress.setVisibility(View.GONE);
+
+                    JSONObject rootObject = null;
+                    try {
+                        rootObject = new JSONObject(response);
+                        String error = rootObject.optString("error");
+                        if (error.equalsIgnoreCase("true")){
+                            setDefaultImage();
+                        }else {
+                            JSONArray jsonArray = rootObject.optJSONArray("images");
+                            for (int i = 0; i < jsonArray.length() ; i++) {
+                                JSONObject image = jsonArray.optJSONObject(i);
+                                String imageUrl = Constants.baseUrl + image.optString("img");
+
+                                images.add(imageUrl);
+                            }
+
+                            if (images.size() > 0){
+                                setViewPagerAdapter();
+                            }else {
+                                setDefaultImage();
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    mProgress.setVisibility(View.GONE);
+                    // pass default image
+                    setDefaultImage();
+
+                }
+            }){
+
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("token", Constants.token);
+                    params.put("id", newsItem.getId());
+                    return params;
+                }
+
+            };
+
+            strReq.setShouldCache(false);
+            // Adding request to request queue
+            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+
+        }else {
+            mProgress.setVisibility(View.GONE);
+            // pass default image
+            setDefaultImage();
+            new SweetDialogHelper(this).showErrorMessage(getString(R.string.error),
+                    getString(R.string.there_is_no_Inter_net));
+        }
+    }
+
+    private void setDefaultImage(){
+        images.add(newsItem.getImageUrl());
+        setViewPagerAdapter();
     }
 
 

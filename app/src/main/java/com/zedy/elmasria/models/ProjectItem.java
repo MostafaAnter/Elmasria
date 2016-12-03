@@ -7,6 +7,16 @@ import android.os.Parcelable;
  * Created by mostafa_anter on 12/2/16.
  */
 public class ProjectItem implements Parcelable {
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     private String  title;
     private String timeStamp;
     private String content;
@@ -17,7 +27,8 @@ public class ProjectItem implements Parcelable {
     private String coordinators;
     private String deliver;
 
-    public ProjectItem(String title, String timeStamp, String content, String imageUrl, String area, String coordinators, String deliver) {
+    public ProjectItem(String id, String title, String timeStamp, String content, String imageUrl, String area, String coordinators, String deliver) {
+        this.id = id;
         this.title = title;
         this.timeStamp = timeStamp;
         this.content = content;
@@ -84,6 +95,7 @@ public class ProjectItem implements Parcelable {
     }
 
     protected ProjectItem(Parcel in) {
+        id = in.readString();
         title = in.readString();
         timeStamp = in.readString();
         content = in.readString();
@@ -100,6 +112,7 @@ public class ProjectItem implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
         dest.writeString(title);
         dest.writeString(timeStamp);
         dest.writeString(content);
