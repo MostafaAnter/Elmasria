@@ -32,7 +32,7 @@
         <activity
             android:name=".activities.HomeActivity"
             android:label="@string/title_activity_home"
-            android:configChanges="screenSize|orientation"
+            android:configChanges="screenSize|orientation|locale"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- [START firebase_service] -->
