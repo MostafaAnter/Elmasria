@@ -34,6 +34,7 @@
             style="@style/MyCustomTabLayout"
             app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
             app:tabBackground="@drawable/tab_selectable_background"
+            app:tabMaxWidth="0dp"
             app:tabGravity="fill"
             app:tabSelectedTextColor="@android:color/white"
             app:tabTextColor="#90909c"

@@ -1,6 +1,7 @@
 package com.zedy.elmasria.adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -120,14 +121,20 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (holder instanceof ItemViewHolder) {
             final ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
 
+            Typeface font = Typeface.createFromAsset(mContext.getAssets(), "fonts/normal.ttf");
+            Typeface fontBold = Typeface.createFromAsset(mContext.getAssets(), "fonts/bold.ttf");
+
             // Get element from your dataset at this position and replace the contents of the view
             // with that element
             itemViewHolder.getMainTitel().setText(mDataSet.get(position).getTitle());
+            itemViewHolder.getMainTitel().setTypeface(fontBold);
             itemViewHolder.getTimeStamp().setText(mDataSet.get(position).getTimeStamp());
+            itemViewHolder.getTimeStamp().setTypeface(font);
 
             // Chcek for empty status message
             if (!TextUtils.isEmpty(mDataSet.get(position).getContent())) {
                 itemViewHolder.getTextStatusMsg().setText(mDataSet.get(position).getContent());
+                itemViewHolder.getTextStatusMsg().setTypeface(font);
 
             } else {
                 // status is empty, remove from view
