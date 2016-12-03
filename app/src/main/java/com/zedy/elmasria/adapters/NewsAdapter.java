@@ -1,6 +1,7 @@
 package com.zedy.elmasria.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -17,6 +18,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.zedy.elmasria.R;
+import com.zedy.elmasria.activities.NewsDetailActivity;
 import com.zedy.elmasria.models.NewsItem;
 import com.zedy.elmasria.utils.OnLoadMoreListener;
 import com.zedy.elmasria.utils.SquaredImageView;
@@ -80,6 +82,11 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "Element " + getAdapterPosition() + " clicked.");
+                    Context context = v.getContext();
+                    Intent intent = new Intent(context, NewsDetailActivity.class);
+                    intent.putExtra("item", mDataSet.get(getPosition()));
+
+                    context.startActivity(intent);
                 }
             });
 
