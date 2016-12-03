@@ -44,6 +44,27 @@ public class Utils {
         }
     }
 
+    public static int getYear(String post_date){
+
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        String year = "0";
+        try {
+            date = (Date)formatter.parse(post_date);
+            SimpleDateFormat df = new SimpleDateFormat("yyyy");
+            year = df.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (date != null) {
+            // Converting timestamp into x ago format
+            return Integer.valueOf(year);
+        }else {
+            return 0;
+        }
+    }
+
     public static String convertTime(long time){
         Date date = new Date(time * 1000);
         Format format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
