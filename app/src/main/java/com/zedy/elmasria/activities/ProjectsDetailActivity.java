@@ -1,12 +1,15 @@
 package com.zedy.elmasria.activities;
 
+import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -48,15 +51,17 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ProjectsDetailActivity extends LocalizationActivity {
+public class ProjectsDetailActivity extends LocalizationActivity implements View.OnClickListener {
     @BindView(R.id.toolbar) Toolbar toolbar;
 
     @BindView(R.id.main_title) TextView mainTitel;
     @BindView(R.id.timestamp) TextView timeStamp;
     @BindView(R.id.txtDescription) TextView textStatusMsg;
+    @BindView(R.id.area) TextView area;
 
     @BindView(R.id.view_pager) RollPagerView rollPagerView;
     @BindView(R.id.progressBar) ProgressBar mProgress;
+    @BindView(R.id.navigation)Button navigation;
 
     private ProjectItem newsItem;
 
@@ -77,6 +82,7 @@ public class ProjectsDetailActivity extends LocalizationActivity {
         if (newsItem != null){
             setDesign(newsItem);
             getImages();
+            navigation.setOnClickListener(this);
         }else {
             finish();
         }
@@ -93,6 +99,9 @@ public class ProjectsDetailActivity extends LocalizationActivity {
         mainTitel.setTypeface(fontBold);
         timeStamp.setText(newsItem.getTimeStamp());
         timeStamp.setTypeface(font);
+
+        area.setText(newsItem.getArea());
+        area.setTypeface(font);
 
         // Chcek for empty status message
         if (!TextUtils.isEmpty(newsItem.getContent())) {
@@ -115,6 +124,20 @@ public class ProjectsDetailActivity extends LocalizationActivity {
         toolbar.setTitle("");
         toolbar.setSubtitle("");
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        // Create a Uri from an intent string. Use the result to create an Intent.
+        Uri gmmIntentUri = Uri.parse("http://maps.google.com/maps?daddr=" + newsItem.getCoordinators());
+
+        // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        // Make the Intent explicit by setting the Google Maps package
+        mapIntent.setPackage("com.google.android.apps.maps");
+
+        // Attempt to start an activity that can handle the Intent
+        startActivity(mapIntent);
     }
 
     private class TestLoopAdapter extends StaticPagerAdapter {

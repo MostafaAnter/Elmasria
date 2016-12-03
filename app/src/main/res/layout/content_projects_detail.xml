@@ -56,6 +56,15 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/area"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="@dimen/feed_item_status_pad_left_right"
+                    android:paddingRight="@dimen/feed_item_status_pad_left_right"
+                    android:paddingTop="@dimen/feed_item_status_pad_top"
+                    android:textColor="#203040" />
 
             </LinearLayout>
         </android.support.v7.widget.CardView>
@@ -81,5 +90,18 @@
                 android:paddingTop="@dimen/feed_item_status_pad_top"
                 android:textColor="#203040" />
         </android.support.v7.widget.CardView>
+
+        <Button
+            android:id="@+id/navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="@string/navigation"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:drawableLeft="@drawable/ic_directions_run_black_24dp"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:background="@color/colorAccent2"/>
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
