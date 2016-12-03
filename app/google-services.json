@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1059354210363",
+    "firebase_url": "https://elmasria-27c1e.firebaseio.com",
+    "project_id": "elmasria-27c1e",
+    "storage_bucket": "elmasria-27c1e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1059354210363:android:d0e2f879660ba0ac",
+        "android_client_info": {
+          "package_name": "com.zedy.elmasria"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1059354210363-r8sh2q2im83b1j5gjpmlp6ev89orqjls.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.zedy.elmasria",
+            "certificate_hash": "59B9DE2FF6D44262E7EB95B85D7DF49ABD1DEE0D"
+          }
+        },
+        {
+          "client_id": "1059354210363-tr3blfgu7fbf3d99tp2j4tmc6d0d1irg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVeS0NiYS8IfkHn6ps5QPkVMJAJsoF-GE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1059354210363-tr3blfgu7fbf3d99tp2j4tmc6d0d1irg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
