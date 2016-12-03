@@ -303,6 +303,11 @@ public class NewsFragment extends Fragment {
             onRefreshComplete();
             new SweetDialogHelper(getActivity()).showErrorMessage(getString(R.string.error),
                     getString(R.string.there_is_no_Inter_net));
+            if (mDataset.size() > 0){
+                noDataView.setVisibility(View.GONE);
+            }else {
+                noDataView.setVisibility(View.VISIBLE);
+            }
         }
     }
 
