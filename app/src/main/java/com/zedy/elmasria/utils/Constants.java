@@ -20,5 +20,7 @@ public class Constants {
     public static final String userLastLocationLat = "userLastLocationLat";
     public static final String userLastLocationLng = "userLastLocationLng";
 
+    public static final String baseUrl = "http://elmasria.co/";
+
 
 }
