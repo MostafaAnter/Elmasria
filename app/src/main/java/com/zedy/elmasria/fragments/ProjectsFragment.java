@@ -1,5 +1,7 @@
 package com.zedy.elmasria.fragments;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,6 +20,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.zedy.elmasria.R;
+import com.zedy.elmasria.activities.NewsDetailActivity;
+import com.zedy.elmasria.activities.ProjectsDetailActivity;
 import com.zedy.elmasria.adapters.ItemClickListener;
 import com.zedy.elmasria.adapters.Section;
 import com.zedy.elmasria.adapters.SectionedExpandableLayoutHelper;
@@ -182,7 +186,9 @@ public class ProjectsFragment extends Fragment implements ItemClickListener {
 
     @Override
     public void itemClicked(ProjectItem item) {
-        
+        Intent intent = new Intent(getActivity(), ProjectsDetailActivity.class);
+        intent.putExtra("item", item);
+        getActivity().startActivity(intent);
     }
 
     @Override
