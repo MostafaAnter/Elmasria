@@ -128,15 +128,14 @@ public class ProjectsDetailActivity extends LocalizationActivity implements View
 
     @Override
     public void onClick(View v) {
-        // Create a Uri from an intent string. Use the result to create an Intent.
-        Uri gmmIntentUri = Uri.parse("http://maps.google.com/maps?daddr=" + newsItem.getCoordinators());
-
-        // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
-        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-        // Make the Intent explicit by setting the Google Maps package
+        String label = newsItem.getTitle();
+        String uriBegin = "geo:" + newsItem.getCoordinators();
+        String query = newsItem.getCoordinators() + "(" + label + ")";
+        String encodedQuery = Uri.encode(query);
+        String uriString = uriBegin + "?q=" + encodedQuery + "&z=16";
+        Uri uri = Uri.parse(uriString);
+        Intent mapIntent = new Intent(android.content.Intent.ACTION_VIEW, uri);
         mapIntent.setPackage("com.google.android.apps.maps");
-
-        // Attempt to start an activity that can handle the Intent
         startActivity(mapIntent);
     }
 

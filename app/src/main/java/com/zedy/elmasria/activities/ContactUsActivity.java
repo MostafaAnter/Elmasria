@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.akexorcist.localizationactivity.LocalizationActivity;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.zedy.elmasria.R;
@@ -194,7 +195,22 @@ public class ContactUsActivity extends LocalizationActivity {
 
             };
 
-            strReq.setShouldCache(false);
+            strReq.setRetryPolicy(new RetryPolicy() {
+                @Override
+                public int getCurrentTimeout() {
+                    return 50000;
+                }
+
+                @Override
+                public int getCurrentRetryCount() {
+                    return 50000;
+                }
+
+                @Override
+                public void retry(VolleyError error) throws VolleyError {
+
+                }
+            });
             // Adding request to request queue
             AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
 

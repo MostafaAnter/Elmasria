@@ -64,7 +64,7 @@ public class Parser {
 
                 String id = itemObject.optString("id");
                 String title = itemObject.optString("title");
-                String timeStamp = Utils.manipulateDateFormat(itemObject.optString("updated_at"));
+                String timeStamp = Utils.manipulateDate(itemObject.optString("deliver"));
                 String content = itemObject.optString("description");
                 String imageUrl = Constants.baseUrl + itemObject.optString("img");
                 String area = itemObject.optString("area");

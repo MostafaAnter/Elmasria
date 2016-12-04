@@ -32,10 +32,10 @@
     <string name="enterEmail">أدخل البريد الصحيح</string>
     <string name="enterMessage">أدخل الرساله من فضلك</string>
     <string name="enterSubject">"أدخل الموضوع "</string>
-    <string name="enterTitle">أدخل عنوان</string>
+    <string name="enterTitle">أدخل الأسم</string>
     <string name="message">الرسالة</string>
     <string name="navigation">الوصول للمكان</string>
     <string name="subject">الموضوع</string>
     <string name="success">تم الأرسال بنجاح</string>
-    <string name="title">العنوان</string>
+    <string name="title">الأسم</string>
 </resources>
