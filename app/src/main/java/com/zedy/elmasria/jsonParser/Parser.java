@@ -17,12 +17,12 @@ import java.util.List;
  */
 
 public class Parser {
-    public static List<NewsItem> parseNews(String feed){
+    public static List<NewsItem> parseNews(String feed) {
         JSONObject rootObject = null;
         try {
             rootObject = new JSONObject(feed);
             String error = rootObject.optString("error");
-            if (error.equalsIgnoreCase("true")){
+            if (error.equalsIgnoreCase("true")) {
                 return null;
             }
             JSONObject newsObject = rootObject.optJSONObject("news");
@@ -31,12 +31,13 @@ public class Parser {
             for (int i = 0; i < dataArray.length(); i++) {
                 JSONObject itemObject = dataArray.optJSONObject(i);
 
+                String id = itemObject.optString("id");
                 String title = itemObject.optString("title");
                 String timeStamp = Utils.manipulateDateFormat(itemObject.optString("updated_at"));
                 String content = itemObject.optString("content");
                 String imageUrl = Constants.baseUrl + itemObject.optString("img");
 
-                itemList.add(new NewsItem(title, timeStamp, content, imageUrl));
+                itemList.add(new NewsItem(id, title, timeStamp, content, imageUrl));
 
 
             }
@@ -49,12 +50,36 @@ public class Parser {
 
     }
 
-    public static List<ProjectItem> parseProjects(String feed){
+    public static NewsItem parseNewsDetailItem(String feed) {
         JSONObject rootObject = null;
         try {
             rootObject = new JSONObject(feed);
             String error = rootObject.optString("error");
-            if (error.equalsIgnoreCase("true")){
+            if (error.equalsIgnoreCase("true")) {
+                return null;
+            }
+
+            JSONObject itemObject = rootObject.optJSONObject("news");
+            String id = itemObject.optString("id");
+            String title = itemObject.optString("title");
+            String timeStamp = Utils.manipulateDateFormat(itemObject.optString("updated_at"));
+            String content = itemObject.optString("content");
+            String imageUrl = Constants.baseUrl + itemObject.optString("img");
+
+            return new NewsItem(id, title, timeStamp, content, imageUrl);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    public static List<ProjectItem> parseProjects(String feed) {
+        JSONObject rootObject = null;
+        try {
+            rootObject = new JSONObject(feed);
+            String error = rootObject.optString("error");
+            if (error.equalsIgnoreCase("true")) {
                 return null;
             }
             JSONArray dataArray = rootObject.optJSONArray("projects");
@@ -79,6 +104,35 @@ public class Parser {
             }
 
             return itemList;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    public static ProjectItem parseProjectsDetailItem(String feed) {
+        JSONObject rootObject = null;
+        try {
+            rootObject = new JSONObject(feed);
+            String error = rootObject.optString("error");
+            if (error.equalsIgnoreCase("true")) {
+                return null;
+            }
+
+                JSONObject itemObject = rootObject.optJSONObject("projects");
+                String id = itemObject.optString("id");
+                String title = itemObject.optString("title");
+                String timeStamp = Utils.manipulateDate(itemObject.optString("deliver"));
+                String content = itemObject.optString("description");
+                String imageUrl = Constants.baseUrl + itemObject.optString("img");
+                String area = itemObject.optString("area");
+                String coordinators = itemObject.optString("coordinators");
+                String deliver = String.valueOf(Utils.getYear(itemObject.optString("deliver")));
+
+                return new ProjectItem(id, title, timeStamp,
+                        content, imageUrl, area,
+                        coordinators, deliver);
         } catch (JSONException e) {
             e.printStackTrace();
             return null;

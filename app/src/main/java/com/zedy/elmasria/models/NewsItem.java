@@ -7,16 +7,27 @@ import android.os.Parcelable;
  * Created by mostafa_anter on 12/2/16.
  */
 public class NewsItem implements Parcelable {
+    private String  id;
     private String  title;
     private String timeStamp;
     private String content;
     private String imageUrl;
 
-    public NewsItem(String title, String timeStamp, String content, String imageUrl) {
+    public NewsItem(String id, String title, String timeStamp, String content, String imageUrl) {
+        this.id = id;
         this.title = title;
         this.timeStamp = timeStamp;
         this.content = content;
         this.imageUrl = imageUrl;
+    }
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -52,6 +63,7 @@ public class NewsItem implements Parcelable {
     }
 
     protected NewsItem(Parcel in) {
+        id = in.readString();
         title = in.readString();
         timeStamp = in.readString();
         content = in.readString();
@@ -65,6 +77,7 @@ public class NewsItem implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
         dest.writeString(title);
         dest.writeString(timeStamp);
         dest.writeString(content);

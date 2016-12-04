@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.akexorcist.localizationactivity.LocalizationActivity;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
@@ -65,9 +66,11 @@ public class ProjectsDetailActivity extends LocalizationActivity implements View
 
     private ProjectItem newsItem;
 
+    private String id;
 
     public static List<String> images;
     private TestLoopAdapter mLoopAdapter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,11 +81,14 @@ public class ProjectsDetailActivity extends LocalizationActivity implements View
         images = new ArrayList<>();
 
         newsItem = getIntent().getParcelableExtra("item");
+        id = getIntent().getStringExtra("id");
 
         if (newsItem != null){
             setDesign(newsItem);
             getImages();
             navigation.setOnClickListener(this);
+        }else if(id != null){
+            getObjectDetail();
         }else {
             finish();
         }
@@ -271,6 +277,92 @@ public class ProjectsDetailActivity extends LocalizationActivity implements View
     private void setDefaultImage(){
         images.add(newsItem.getImageUrl());
         setViewPagerAdapter();
+    }
+
+
+
+    private void getObjectDetail() {
+        if (Utils.isOnline(this)) {
+            // Tag used to cancel the request
+            String tag_string_req = "string_req";
+
+            final SweetDialogHelper sweetDialogHelper = new SweetDialogHelper(this);
+            sweetDialogHelper.showMaterialProgress(getString(R.string.loading));
+
+            String url = "http://elmasria.co/api/project/single";
+            try {
+                url = URLDecoder.decode(url, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
+            StringRequest strReq = new StringRequest(Request.Method.POST,
+                    url, new Response.Listener<String>() {
+
+                @Override
+                public void onResponse(String response) {
+                    sweetDialogHelper.dismissDialog();
+                    newsItem = Parser.parseProjectsDetailItem(response);
+                    if (newsItem != null){
+                        setDesign(newsItem);
+                        getImages();
+                        navigation.setOnClickListener(ProjectsDetailActivity.this);
+                    }
+
+                }
+            }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    sweetDialogHelper.dismissDialog();
+                    new SweetDialogHelper(ProjectsDetailActivity.this).showErrorMessage(getString(R.string.error),
+                            getString(R.string.try_again));
+
+                }
+            }) {
+
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("token", Constants.token);
+                    params.put("id", id);
+
+                    return params;
+                }
+
+            };
+
+            strReq.setRetryPolicy(new RetryPolicy() {
+                @Override
+                public int getCurrentTimeout() {
+                    return 50000;
+                }
+
+                @Override
+                public int getCurrentRetryCount() {
+                    return 50000;
+                }
+
+                @Override
+                public void retry(VolleyError error) throws VolleyError {
+
+                }
+            });
+            // Adding request to request queue
+            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+
+        } else {
+            new SweetDialogHelper(this).showErrorMessage(getString(R.string.error),
+                    getString(R.string.there_is_no_Inter_net));
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, HomeActivity.class));
+        overridePendingTransition(R.anim.push_up_enter, R.anim.push_up_exit);
+        finish();
     }
 
 
