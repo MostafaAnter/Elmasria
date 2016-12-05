@@ -35,7 +35,7 @@
     <string name="title_activity_projects_detail" translatable="false">ProjectsDetailActivity</string>
     <string name="contact_us">Contact us</string>
     <string name="navigation">navigation</string>
-    <string name="title">Name</string>
+    <string name="title">User name</string>
     <string name="subject">Subject</string>
     <string name="email">Email</string>
     <string name="message">Message</string>

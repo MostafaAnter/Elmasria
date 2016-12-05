@@ -37,5 +37,5 @@
     <string name="navigation">الوصول للمكان</string>
     <string name="subject">الموضوع</string>
     <string name="success">تم الأرسال بنجاح</string>
-    <string name="title">الأسم</string>
+    <string name="title">أسم المستخدم</string>
 </resources>

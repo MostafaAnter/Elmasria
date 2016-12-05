@@ -42,7 +42,7 @@
         <EditText
             android:id="@+id/message"
             android:hint="@string/message"
-            android:minHeight="?android:attr/listPreferredItemHeightLarge"
+            android:minHeight="200dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
