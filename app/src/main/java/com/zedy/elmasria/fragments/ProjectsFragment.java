@@ -32,7 +32,6 @@ import com.zedy.elmasria.utils.Constants;
 import com.zedy.elmasria.utils.SweetDialogHelper;
 import com.zedy.elmasria.utils.Utils;
 
-import org.apache.commons.lang.StringEscapeUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -123,7 +122,7 @@ public class ProjectsFragment extends Fragment implements ItemClickListener {
                         @Override
                         public void onResponse(String response) {
                             Log.d(TAG, response.toString());
-                            response = StringEscapeUtils.unescapeJava(response);
+                            //response = StringEscapeUtils.unescapeJava(response);
                             List<ProjectItem> taskList = Parser.parseProjects(response);
                             if (taskList.size() > 0){
                                 sectionedExpandableLayoutHelper.removeAllSection();
